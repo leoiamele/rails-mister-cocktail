@@ -1,10 +1,11 @@
 class CocktailsController < ApplicationController
-def index
+  def index
     @cocktails = Cocktail.all
   end
 
   def show
     @cocktail = Cocktail.find(params[:id])
+    @dose = Dose.new
   end
 
   def new
@@ -13,8 +14,11 @@ def index
 
   def create
     @cocktail = Cocktail.new(cocktail_params)
-    @cocktail.save
-    redirect_to cocktail_path(@cocktail)
+    if @cocktail.save
+      redirect_to cocktail_path(@cocktail)
+    else
+      render :new
+    end
   end
 
   def destroy
@@ -27,7 +31,7 @@ def index
     @cocktail = Cocktail.find params[:id]
   end
 
-def update
+  def update
     @cocktail = Cocktail.find(params[:id])
     @cocktail.update(cocktail_params)
   end
